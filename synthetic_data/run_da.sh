@@ -6,7 +6,7 @@ BASE_DIR="$SCRIPT_DIR"
 source "$BASE_DIR/exec_params.sh"
 
 RELATION_TYPE="path3"
-PATTERN_NAME="path3_n_u_123"
+PATTERN_NAME="path3_test"
 QUERY_NAME="full_query"
 # EXP_NAME="exp1_1000"
 # ITERS=1

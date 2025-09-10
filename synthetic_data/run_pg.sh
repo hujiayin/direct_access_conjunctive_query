@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+
 source pg_config.sh
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
@@ -7,7 +7,7 @@ BASE_DIR="$SCRIPT_DIR"
 source "$BASE_DIR/exec_params.sh"
 
 RELATION_TYPE="path3"
-PATTERN_NAME="path3_n_u_123"
+PATTERN_NAME="path3_l_u_11_33_40"
 QUERY_NAME="full_query"
 # EXP_NAME="exp1_1000"
 ITERS=3
@@ -46,7 +46,7 @@ echo "timestamp,exp_id,trial,process,k,duration_ms" > "$OUTPUT_DIR/timing_log_pg
 for DATASET_DIR in "$INPUT_DATASETS_DIR"/*/; do 
   
   EXP_ID=$(basename "$DATASET_DIR")
-  K_FILE="$DATASET_DIR/k_list.json"
+  K_FILE="$DATASET_DIR/median_list.json"
 
   DB_NAME="${PATTERN_NAME}_${EXP_ID}"
 

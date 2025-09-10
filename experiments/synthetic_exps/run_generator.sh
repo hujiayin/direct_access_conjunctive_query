@@ -3,11 +3,11 @@ set -e
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 BASE_DIR="$SCRIPT_DIR"
-source "$BASE_DIR/exec_params.sh"
+# source "$BASE_DIR/exec_params.sh"
 
-RELATION_TYPE="path3_3"
-NUM_ROWS_LIST=(10 100)
-DOMAIN_TYPE="small"
+RELATION_TYPE="path3_2"
+NUM_ROWS_LIST=(5000000)
+DOMAIN_TYPE="large"
 DIST_TYPE="uniform"
 SEED=1
 EXTRA=""
@@ -32,8 +32,9 @@ else
   PATTERN_NAME="${RELATION_TYPE}_${domain_initial}_${dist_str}_${SEED}${extra_str}" 
 fi
 
-while getopts "r:n:d:t:s:x:p:" opt; do
+while getopts "b:r:n:d:t:s:x:p:" opt; do
   case $opt in
+    b) BASE_DIR="$OPTARG" ;;
     r) RELATION_TYPE="$OPTARG" ;;
     n) IFS=',' read -r -a NUM_ROWS_LIST <<< "$OPTARG" ;;
     d) DOMAIN_TYPE="$OPTARG" ;;
@@ -50,7 +51,7 @@ done
 echo "Generated data_dir_name: $PATTERN_NAME"
 
 QUERY_FILE="$BASE_DIR/$RELATION_TYPE/full_query/query.json"
-GEN_DATA_FILE="$BASE_DIR/data_generator.py"
+GEN_DATA_FILE="experiments/synthetic_exps/data_generator.py"
 SAVE_DIR="$BASE_DIR/$RELATION_TYPE/input/$PATTERN_NAME"
 
 echo "Save directory: $SAVE_DIR"

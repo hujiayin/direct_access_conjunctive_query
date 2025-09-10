@@ -1,0 +1,44 @@
+python3 "direct_access_klist.py"       
+--query_file "examples/exp_data2/query.json"       
+--data_dir "examples/exp_data2"       
+--k_file "examples/exp_data2/quartile_list.json"       
+--timer_enabled True       
+--timer_log "examples/exp_data2/access_time_log.log"       
+--time_data_file "examples/exp_data2/access_time_log.csv"       
+--trial "3"      
+--records_file "examples/exp_data2/records_access.csv"
+
+python3 "select_klist.py" --query_file "examples/exp_data2/query.json"  --data_dir "examples/exp_data2"  --k_file "examples/exp_data2/quartile_list.json"  --timer_enabled True  --timer_log "examples/exp_data2/select_time_log.log"  --time_data_file "examples/exp_data2/select_time_log.csv"   --records_file "examples/exp_data2/records_select.csv"
+
+python3 "run_direct_access.py"       
+--query_file "examples/exp_data2/query.json"       
+--data_dir "examples/exp_data2"       
+--k_file "examples/exp_data2/quartile_list.json"       
+--timer_enabled True       
+--timer_log "examples/exp_data2/access_time_log.log"       
+--time_data_file "examples/exp_data2/access_time_log.csv"       
+--trial "3"      
+--records_file "examples/exp_data2/records_access.csv"
+
+python -m src.cli.direct_access_klist.py       
+--query_file "examples/exp_data2/query.json"       
+--data_dir "examples/exp_data2"       
+--k_file "examples/exp_data2/quartile_list.json"       
+--timer_enabled True       
+--timer_log "examples/exp_data2/access_time_log.log"       
+--time_data_file "examples/exp_data2/access_time_log.csv"       
+--trial "3"      
+--records_file "examples/exp_data2/records_access.csv"
+
+python3 "src/cli/direct_access_klist.py"       
+--query_file "examples/exp_data2/query.json"       
+--data_dir "examples/exp_data2"       
+--k_file "examples/exp_data2/quartile_list.json"       
+--timer_enabled True       
+--timer_log "examples/exp_data2/access_time_log.log"       
+--time_data_file "examples/exp_data2/access_time_log.csv"       
+--trial "3"      
+--records_file "examples/exp_data2/records_access.csv"
+
+python "src/cli/run_direct_access.py" --query_file "examples/data2/query.json" --data_dir "examples/data2" --k_file "examples/data2/k_list.json"  --records_file "examples/data2/records_access.csv"
+

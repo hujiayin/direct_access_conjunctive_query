@@ -1,0 +1,7 @@
+DIST_TYPE,DIST_PARAM,DOMAIN_TYPE
+normal,,ten
+uniform,,ten
+zipf,,ten
+normal,,q
+uniform,,q
+zipf,,q

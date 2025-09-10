@@ -109,7 +109,7 @@ def main():
     parser.add_argument("--query_file", type=str, default="query.json", help="Path to the query JSON file")
     parser.add_argument("--relation_type", type=str, help="Type of the relation to generate")
     parser.add_argument("--num_rows", type=int, nargs="*", required=True, help="Number of rows per relation.")
-    parser.add_argument("--domain_type", type=str, choices=["large", "small", "half", "twice", 'q'])
+    parser.add_argument("--domain_type", type=str, choices=["large", "small", "half", "twice", 'q', 'four', 'x', 'ten', 'eight'], required=True, help="Type of domain size relative to num_rows.")
     parser.add_argument("--dist_type", type=str, required=True) 
     parser.add_argument("--dist_params", type=int, nargs="*", required=False, help="Parameters for the distribution types, if applicable.")
     parser.add_argument("--save_dir", type=str, required=False, help="Directory to save the generated data).")
@@ -167,6 +167,14 @@ def generate_data(relations, num_row, domain_type, dist_type, dist_params, data_
         domain_size = int(num_row * 2)
     elif domain_type == "q": 
         domain_size = int(sqrt(num_row)) * 2
+    elif domain_type == "four": 
+        domain_size = int(num_row / 4)
+    elif domain_type == "x": 
+        domain_size = int(num_row / 6)
+    elif domain_type == "ten":
+        domain_size = int(num_row / 10)
+    elif domain_type == "eight":
+        domain_size = int(num_row / 8)
     else: 
         raise ValueError("Not supported domain type.")
 

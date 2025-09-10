@@ -6,8 +6,8 @@ BASE_DIR="$SCRIPT_DIR"
 source "$BASE_DIR/exec_params.sh"
 
 RELATION_TYPE="path3"
-PATTERN_NAME="path3_n_u_123"
-QUERY_NAME="full_query"
+PATTERN_NAME="path3_l_u_11_33_40"
+QUERY_NAME="order1b_query"
 # EXP_NAME="exp1_1000"
 # ITERS=1
 TIMER_ENABLED=true
