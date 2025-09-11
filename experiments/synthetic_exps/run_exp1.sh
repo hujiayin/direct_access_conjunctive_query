@@ -2,17 +2,17 @@
 # set -euo pipefail
 
 RELATION_TYPE="path3_2"
-NUM_ROWS_LIST_CSV="100,1000,2000,3000,5000,10000,20000,30000,50000,100000,200000,300000,500000,800000,1000000"
-# NUM_ROWS_LIST_CSV="50,100"
-SEED_LIST_CSV="2,37,61" 
+NUM_ROWS_LIST_CSV="100,300,1000,3000,10000,30000,100000,300000,1000000"
+# NUM_ROWS_LIST_CSV="20,50"
+SEED_LIST_CSV="11,33,40" 
 QUERY_NAME="full_query"
 ITERS="5"
-K_FILE_NAME="quartile_list.json"
-OUTPUT_MARK="quartiles"
+K_FILE_NAME="median_list.json"
+OUTPUT_MARK="median"
 EXTRA=""
 
-BASE_DIR="experiments/synthetic_exps/exp3_quartiles"
-PARAMS_FILE="${1:-experiments/synthetic_exps/exp3_params.csv}"
+BASE_DIR="experiments/synthetic_exps/exp1_median"
+PARAMS_FILE="${1:-experiments/synthetic_exps/exp1_params.csv}"
 RUN_SCRIPT="${RUN_SCRIPT:-experiments/synthetic_exps/run_klist.sh}"
 
 tail -n +2 "$PARAMS_FILE" | tr -d '\r' | \
@@ -38,5 +38,6 @@ while IFS=, read -r DIST_TYPE DIST_PARAMS DOMAIN_TYPE; do
   OUTPUT_MARK="$OUTPUT_MARK" \
   EXTRA="$EXTRA" \
   DOMAIN_TYPE="$DOMAIN_TYPE" DIST_TYPE="$DIST_TYPE" DIST_PARAMS="$DIST_PARAMS" \
+  RUN_PGSQL=true \
     bash "$RUN_SCRIPT" 
 done

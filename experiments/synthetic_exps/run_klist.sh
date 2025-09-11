@@ -31,6 +31,8 @@ SEED_LIST=(2)
 : "${K_FILE_NAME:=quartile_list.json}"
 : "${OUTPUT_MARK:=}"
 : "${EXTRA:=}"
+: "${RUN_PGSQL:=false}"
+: "${RUN_START:=true}"
 
 echo "Base directory: $BASE_DIR"
 
@@ -69,27 +71,40 @@ PATTERN_NAME="${RELATION_TYPE}_${domain_initial}_${dist_str}_${seed_str}${extra_
 
 echo "Save directory: $PATTERN_NAME"
 
-# # run generator
-# if [ -n "$SEED_LIST" ]; then
+if [ "$RUN_START" = true ]; then
+  # run generator
+  if [ -n "$SEED_LIST" ]; then
 
-#   for seed in "${SEED_LIST[@]}"; do
-#     echo "Using seed: $seed"
+    for seed in "${SEED_LIST[@]}"; do
+      echo "Using seed: $seed"
 
-#     bash experiments/synthetic_exps/run_generator.sh -b "$BASE_DIR" -r "$RELATION_TYPE" -n "$(IFS=,; echo "${NUM_ROWS_LIST[*]}")" -d "$DOMAIN_TYPE" -t "$DIST_TYPE" -s "$seed" -x "$EXTRA" -p "$PATTERN_NAME"
+      bash experiments/synthetic_exps/run_generator.sh -b "$BASE_DIR" -r "$RELATION_TYPE" -n "$(IFS=,; echo "${NUM_ROWS_LIST[*]}")" -d "$DOMAIN_TYPE" -t "$DIST_TYPE" -s "$seed" -x "$EXTRA" -p "$PATTERN_NAME"
 
-#   done
+    done
 
-# elif [ -n "$SEED" ]; then
+  elif [ -n "$SEED" ]; then
 
-#   echo "Using single seed: $SEED"
-#   bash experiments/synthetic_exps/run_generator.sh -b "$BASE_DIR" -r "$RELATION_TYPE" -n "$(IFS=,; echo "${NUM_ROWS_LIST[*]}")" -d "$DOMAIN_TYPE" -t "$DIST_TYPE" -s "$SEED" -x "$EXTRA" -p "$PATTERN_NAME"
+    echo "Using single seed: $SEED"
+    bash experiments/synthetic_exps/run_generator.sh -b "$BASE_DIR" -r "$RELATION_TYPE" -n "$(IFS=,; echo "${NUM_ROWS_LIST[*]}")" -d "$DOMAIN_TYPE" -t "$DIST_TYPE" -s "$SEED" -x "$EXTRA" -p "$PATTERN_NAME"
 
-# fi
+  fi
 
-# run count
-bash experiments/synthetic_exps/run_count.sh -b "$BASE_DIR" -r "$RELATION_TYPE" -p "$PATTERN_NAME"
+  # run count
+  bash experiments/synthetic_exps/run_count.sh -b "$BASE_DIR" -r "$RELATION_TYPE" -p "$PATTERN_NAME"
 
-# bash experiments/synthetic_exps/run_da.sh -b "$BASE_DIR" -r "$RELATION_TYPE" -p "$PATTERN_NAME" -q "$QUERY_NAME" -i "$ITERS" -k "$K_FILE_NAME" -o "$OUTPUT_MARK"
-# bash experiments/synthetic_exps/run_select.sh -b "$BASE_DIR" -r "$RELATION_TYPE" -p "$PATTERN_NAME" -q "$QUERY_NAME" -i "$ITERS" -k "$K_FILE_NAME" -o "$OUTPUT_MARK"
+fi
 
+bash experiments/synthetic_exps/run_da.sh -b "$BASE_DIR" -r "$RELATION_TYPE" -p "$PATTERN_NAME" -q "$QUERY_NAME" -i "$ITERS" -k "$K_FILE_NAME" -o "$OUTPUT_MARK"
+bash experiments/synthetic_exps/run_select.sh -b "$BASE_DIR" -r "$RELATION_TYPE" -p "$PATTERN_NAME" -q "$QUERY_NAME" -i "$ITERS" -k "$K_FILE_NAME" -o "$OUTPUT_MARK"
+
+
+if [ "$RUN_PGSQL" = true ]; then
+  echo "Generate SQL files..."
+  QUERY_FILE="$BASE_DIR/$RELATION_TYPE/$QUERY_NAME/query.json"
+  GEN_SQL_FILE="src/cli/query_to_sql.py"
+  python $GEN_SQL_FILE --query_file "$QUERY_FILE" 
+
+  bash experiments/synthetic_exps/run_pg.sh -b "$BASE_DIR" -r "$RELATION_TYPE" -p "$PATTERN_NAME" -q "$QUERY_NAME" -i "$ITERS" -k "$K_FILE_NAME" -o "$OUTPUT_MARK"
+
+fi
 
