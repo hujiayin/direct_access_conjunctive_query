@@ -17,10 +17,14 @@ pip install -r requirements.txt
 The database system used in the experiments is PostgreSQL 17.4 ([Download](/https://www.postgresql.org/download/)). For our experiments, the database configuration is modified. We use the following settings: 
 ```
 # change in postgresql.conf
-work_mem="2G"
-statement_timeout=3600000
+work_mem = 2048MB 
+shared_buffers = 2048MB
+statement_timeout = 3600000
 ```
-
+Restart PostgreSQL and active the new configuration after changing. 
+```
+sudo systemctl restart postgresql
+```
 
 ## Examples 
 We provide some small examples under the [examples](examples) directory. To get the results, use the following command to run all the examples we provide. 
@@ -32,4 +36,17 @@ A user can use their own data and query aligned with the format in the examples.
 bash examples/template_directaccess.sh
 bash examples/template_select.sh
 ```
+
 ## Experiments
+Currently we have 3 experiments exploring the 3-way join. 
+1. Performance among Direct Access, Single Access and PostgreSQL with different input sizes and different join sizes. 
+2. Effect of access position among Direct Access, Single Access and PostgreSQL with full order and single order(as a join attribute). 
+3. Change of relative performance between Direct Access and Single Access with different input sizes under different distributions.
+
+To run the experiments 1 & 2, please first set [pg_config.sh](synthetic_data/pg_config.sh). 
+Use the following command to run the experiments. 
+```
+bash experiments/synthetic_exps/run_exp1.sh > /dev/null 2>&1
+bash experiments/synthetic_exps/run_exp2.sh > /dev/null 2>&1
+bash experiments/synthetic_exps/run_exp3.sh > /dev/null 2>&1
+```
